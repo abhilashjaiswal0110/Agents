@@ -54,7 +54,7 @@ jobs:
           npm ci
           npm run build
 
-      - name: Build  iamge Node Skill Agent
+      - name: Build Node Skill Agent
         working-directory: ./samples/nodejs/copilotstudio-skill/
         run: |
           npm ci

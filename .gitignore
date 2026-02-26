@@ -397,3 +397,9 @@ static/
 devTools/
 node_modules/
 
+# TypeScript build info
+*.tsbuildinfo
+
+# Python test cache
+.pytest_cache/
+

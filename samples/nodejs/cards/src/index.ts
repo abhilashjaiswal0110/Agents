@@ -9,9 +9,9 @@ import AdaptiveCard from './resources/adaptiveCard.json'
 const CardSampleAgent = new AgentApplication<TurnState>()
 
 CardSampleAgent.onConversationUpdate('membersAdded', async (context: TurnContext, state: TurnState) => {
-  const membersAdded = context.activity.membersAdded
-  for (let cnt = 0; cnt < membersAdded!.length; cnt++) {
-    if ((context.activity.recipient != null) && membersAdded![cnt].id !== context.activity.recipient.id) {
+  const membersAdded = context.activity.membersAdded ?? []
+  for (let cnt = 0; cnt < membersAdded.length; cnt++) {
+    if ((context.activity.recipient != null) && membersAdded[cnt].id !== context.activity.recipient.id) {
       await CardMessages.sendIntroCard(context)
     }
   }
