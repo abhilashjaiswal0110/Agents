@@ -33,4 +33,4 @@ resource msteams 'microsoft.botService/botServices/channels@2023-09-15-preview' 
   }
 }
 
-output appId string = azureBot.id
+output botResourceId string = azureBot.id

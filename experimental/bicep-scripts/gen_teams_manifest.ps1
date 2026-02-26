@@ -7,9 +7,9 @@ param(
 # Define JSON content as a string
 $jsonContent = @'
 {
-  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v/MicrosoftTeams.schema.json",
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.19/MicrosoftTeams.schema.json",
   "version": "1.0.0",
-  "manifestVersion": "",
+  "manifestVersion": "1.19",
   "id": "${APP_ID}",
   "name": {
     "short": "Testing Teams SSO Auth",
@@ -53,7 +53,7 @@ $jsonContent = @'
       "scopes": [
         "personal",
         "team",
-        "groupchat"
+        "groupChat"
       ],
       "isNotificationOnly": false,
       "supportsCalling": false,

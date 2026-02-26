@@ -49,21 +49,29 @@ namespace RetrievalBot.Plugins
         /// </example>
         /// <returns> The current date and time in the local time zone </returns>
         [KernelFunction, Description("Get the current date and time in the local time zone")]
-        public string Now(IFormatProvider formatProvider = null) =>
+        public string Now(IFormatProvider? formatProvider = null) =>
             // Sunday, January 12, 2025 9:15 PM
             DateTimeOffset.Now.ToString("f", formatProvider);
 
 
 
-        [KernelFunction, Description("Get the number of days to Microsoft Build 2025")]
-        public Double DaysToBuild()
+        // Microsoft Build typically starts around May 19-23 each year.
+        // Day 22 is used as a conservative cutoff: if today is past May 22,
+        // assume the current year's Build has passed and compute against next year.
+        private const int BuildMonth = 5;
+        private const int BuildDay = 19;
+        private const int BuildRolloverDay = 22;
+
+        [KernelFunction, Description("Get the number of days to the next Microsoft Build conference")]
+        public double DaysToBuild()
         {
-            DateTime d1 = DateTime.Now;
-            //Build 2025 starts on May 19th 2025
-            DateTime d2 = DateTime.Parse("5/19/2025 12:00:01 AM");
-            TimeSpan difference = d2 - d1;
-            var days = difference.TotalDays;
-            return days;
+            DateTime today = DateTime.Now;
+            int year = today.Month > BuildMonth || (today.Month == BuildMonth && today.Day > BuildRolloverDay)
+                ? today.Year + 1
+                : today.Year;
+            DateTime nextBuild = new DateTime(year, BuildMonth, BuildDay);
+            TimeSpan difference = nextBuild - today;
+            return difference.TotalDays;
         }
         
     }

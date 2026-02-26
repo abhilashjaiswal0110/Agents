@@ -68,8 +68,9 @@ namespace RetrievalBot.Plugins
             }
             catch (Exception ex)
             {
-                // Log or inspect the exception and return details for debugging
-                return $"Exception: {ex.GetType().Name} - {ex.Message}\nStackTrace: {ex.StackTrace}";
+                // Log the exception server-side without exposing internal details to the caller
+                Console.Error.WriteLine(ex);
+                return "An error occurred while processing your request.";
             }
         }
     }

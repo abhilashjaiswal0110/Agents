@@ -1,8 +1,8 @@
 {
-  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v/MicrosoftTeams.schema.json",
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.19/MicrosoftTeams.schema.json",
   "version": "1.0.0",
-  "manifestVersion": "",
-  "id": "643bbcc0-be45-46d5-838c-b8390347bf49",
+  "manifestVersion": "1.19",
+  "id": "79e090f7-bb8e-4b24-b966-1e88178962c6",
   "name": {
     "short": "Testing Teams SSO Auth",
     "full": "Testing Teams Single Sign On Sample"
@@ -45,7 +45,7 @@
       "scopes": [
         "personal",
         "team",
-        "groupchat"
+        "groupChat"
       ],
       "isNotificationOnly": false,
       "supportsCalling": false,
