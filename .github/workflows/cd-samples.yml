@@ -13,53 +13,73 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-  
+
       - name: Set up Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
       - name: Install Node dependencies
-        run: npm install
-        working-directory: ./samples
+        run: npm ci
 
       - name: Build dotnet Samples
-        working-directory: ./samples
+        working-directory: ./samples/dotnet
         run: |
           dotnet build
-      
 
       - name: Run lint
         run: npm run lint
-        working-directory: ./samples
 
       - name: Build Node Copilot Studio client sample
-        working-directory: ./samples/basic/copilotstudio-client/nodejs/
+        working-directory: ./samples/nodejs/copilotstudio-client/
         run: |
-          npm install
+          npm ci
           npm run build
 
-      - name: build Node Empty Agent
-        working-directory: ./samples/basic/empty-agent/nodejs/
+      - name: Build Node Copilot Studio client - React Webchat sample
+        working-directory: ./samples/nodejs/copilotstudio-webchat-react/
         run: |
-          npm install
-          npm run build
-      
-      - name: Build  Node Cards bot
-        working-directory: ./samples/basic/cards/nodejs/
-        run: |
-          npm install
+          npm ci
           npm run build
 
-      - name: Build  iamge Node Skill bot
-        working-directory: ./samples/complex/copilotstudio-skill/nodejs/
+      - name: build Node QuickStart
+        working-directory: ./samples/nodejs/quickstart
         run: |
-          npm install
-          npm run build
-      
-      - name: Build Node Weather Agent
-        working-directory: ./samples/basic/weather-agent/nodejs/
-        run: |
-          npm install
+          npm ci
           npm run build
 
+      - name: Build  Node Cards Agent
+        working-directory: ./samples/nodejs/cards/
+        run: |
+          npm ci
+          npm run build
+
+      - name: Build  iamge Node Skill Agent
+        working-directory: ./samples/nodejs/copilotstudio-skill/
+        run: |
+          npm ci
+          npm run build
+
+      - name: Build Node langChain Agent
+        working-directory: ./samples/nodejs/langchain-multiturn/
+        run: |
+          npm ci
+          npm run build
+
+      - name: Build Node StreamingResponse Agent
+        working-directory: ./samples/nodejs/azure-ai-streaming/
+        run: |
+          npm ci
+          npm run build
+
+      - name: Build Node auto signin Agent
+        working-directory: ./samples/nodejs/auto-signin/
+        run: |
+          npm ci
+          npm run build
+
+      - name: Build Node OBO Agent
+        working-directory: ./samples/nodejs/obo-authorization/
+        run: |
+          npm ci
+          npm run build
