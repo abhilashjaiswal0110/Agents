@@ -46,8 +46,8 @@ const agent = createReactAgent({
 
 const sysMessage = new SystemMessage(`
         You are a friendly assistant that helps people find a weather forecast for a given time and place.
-        You may ask follow up questions until you have enough informatioon to answer the customers question,
-        but once you have a forecast forecast, make sure to format it nicely using an adaptive card.
+        You may ask follow up questions until you have enough information to answer the customers question,
+        but once you have a forecast, make sure to format it nicely using an adaptive card.
 
         Respond in JSON format with the following JSON schema, and do not use markdown in the response:
 
@@ -58,6 +58,11 @@ const sysMessage = new SystemMessage(`
 )
 
 weatherAgent.onActivity(ActivityTypes.Message, async (context: TurnContext, state) => {
+  const userText = context.activity.text ?? ''
+  if (!userText) {
+    await context.sendActivity('Please send a text message with your weather question.')
+    return
+  }
   context.streamingResponse.setFeedbackLoop(true)
   context.streamingResponse.setSensitivityLabel({ type: 'https://schema.org/Message', '@type': 'CreativeWork', name: 'Internal' })
   context.streamingResponse.setGeneratedByAILabel(true)
@@ -65,14 +70,21 @@ weatherAgent.onActivity(ActivityTypes.Message, async (context: TurnContext, stat
   const llmResponse = await agent.invoke({
     messages: [
       sysMessage,
-      new HumanMessage(context.activity.text!)
+      new HumanMessage(userText)
     ]
   },
   {
     configurable: { thread_id: context.activity.conversation!.id }
   })
 
-  const llmResponseContent: WeatherForecastAgentResponse = JSON.parse(llmResponse.messages[llmResponse.messages.length - 1].content as string)
+  let llmResponseContent: WeatherForecastAgentResponse
+  try {
+    llmResponseContent = JSON.parse(llmResponse.messages[llmResponse.messages.length - 1].content as string)
+  } catch {
+    await context.streamingResponse.queueTextChunk(llmResponse.messages[llmResponse.messages.length - 1].content as string)
+    await context.streamingResponse.endStream()
+    return
+  }
 
   if (llmResponseContent.contentType === 'Text') {
     await context.streamingResponse.queueTextChunk(llmResponseContent.content)

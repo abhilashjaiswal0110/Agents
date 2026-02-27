@@ -27,6 +27,11 @@ jobs:
         run: |
           dotnet build
 
+      - name: Run dotnet Tests
+        working-directory: ./samples/dotnet
+        run: |
+          dotnet test --no-build --verbosity normal
+
       - name: Run lint
         run: npm run lint
 
@@ -48,13 +53,18 @@ jobs:
           npm ci
           npm run build
 
+      - name: Test Node QuickStart
+        working-directory: ./samples/nodejs/quickstart
+        run: |
+          npx vitest run
+
       - name: Build  Node Cards Agent
         working-directory: ./samples/nodejs/cards/
         run: |
           npm ci
           npm run build
 
-      - name: Build  iamge Node Skill Agent
+      - name: Build Node Skill Agent
         working-directory: ./samples/nodejs/copilotstudio-skill/
         run: |
           npm ci
@@ -83,3 +93,21 @@ jobs:
         run: |
           npm ci
           npm run build
+
+      - name: Build Node Multi-Turn Prompt Agent
+        working-directory: ./samples/nodejs/multi-turn-prompt/
+        run: |
+          npm ci
+          npm run build
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install and Test Python QuickStart
+        working-directory: ./samples/python/quickstart
+        run: |
+          pip install -r requirements.txt
+          pip install pytest pytest-asyncio
+          python -m pytest tests/ -v
